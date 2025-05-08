@@ -1,53 +1,77 @@
 import 'package:flutter/material.dart';
 
-class PantallaDos extends StatefulWidget {
-  const PantallaDos({Key? key}) : super(key: key);
+class SliderTransitionExample extends StatefulWidget {
+  const SliderTransitionExample({Key? key}) : super(key: key);
 
   @override
-  _PantallaDosState createState() => _PantallaDosState();
+  _SliderTransitionExampleState createState() =>
+      _SliderTransitionExampleState();
 }
 
-class _PantallaDosState extends State<PantallaDos> {
-  TimeOfDay _timeOfDay = const TimeOfDay(hour: 8, minute: 30);
+class _SliderTransitionExampleState extends State<SliderTransitionExample>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<Offset> _offsetAnimation;
+  double _sliderValue = 0.0;
 
-  void _showTimePicker() {
-    showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    ).then((value) {
-      setState(() {
-        _timeOfDay = value!;
-      });
-    });
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    );
+
+    _offsetAnimation = Tween<Offset>(
+      begin: Offset.zero,
+      end: const Offset(1.5, 0.0),
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.elasticOut,
+    ));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Time Picker')),
+      appBar: AppBar(
+        title: const Text('Slider Transition Demo'),
+      ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              _timeOfDay.format(context).toString(),
-              style: const TextStyle(
-                fontSize: 50,
-                fontWeight: FontWeight.bold,
-                color: Colors.grey,
-              ),
+            SlideTransition(
+              position: _offsetAnimation,
+              child: const FlutterLogo(size: 100),
             ),
-            MaterialButton(
-              onPressed: _showTimePicker,
-              color: Colors.deepPurple[300],
-              child: const Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Text(
-                  'PICK TIME',
-                  style: TextStyle(fontSize: 24, color: Colors.white),
-                ),
-              ),
-            )
+            const SizedBox(height: 40),
+            Slider(
+              value: _sliderValue,
+              min: 0.0,
+              max: 1.0,
+              onChanged: (value) {
+                setState(() {
+                  _sliderValue = value;
+                  _controller.value = value;
+                });
+              },
+            ),
+            Text('Valor: ${_sliderValue.toStringAsFixed(2)}'),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                _controller.repeat(reverse: true);
+              },
+              child: const Text('Animar Automáticamente'),
+            ),
           ],
         ),
       ),

@@ -6,7 +6,7 @@ import 'package:jimenez/p3stack.dart';
 import 'package:jimenez/p4lineargradient.dart';
 import 'package:jimenez/p5elevatedbutton.dart';
 import 'package:jimenez/p6floatingactionbutton.dart';
-import 'package:jimenez/p7mawmaterialbutton.dart';
+
 import 'package:jimenez/p8iconbutton.dart';
 import 'package:jimenez/p9navigator.dart';
 import 'package:jimenez/p10card.dart';
@@ -25,17 +25,11 @@ class MisRutasApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const PantallaInicial(),
-        '/pantalla1': (context) => const PantallaUno(),
-        '/pantalla2': (context) => const PantallaDos(),
-        '/pantalla3': (context) => const PantallaTres(),
-        '/pantalla4': (context) => const PantallaCuatro(),
-        '/pantalla5': (context) => const PantallaCinco(),
-        '/pantalla6': (context) => const PantallaSeis(),
-        '/pantalla7': (context) => const PantallaSiete(),
-        '/pantalla8': (context) => const PantallaOcho(),
-        '/pantalla9': (context) => const PantallaNueve(),
-        '/pantalla10': (context) => const PantallaDiez(),
-        '/pantalla11': (context) => const PantallaOnce(),
+        '/pantalla1': (context) => const PerspectiveAnimationDemo(),
+        '/pantalla2': (context) => const SliderTransitionExample(),
+        '/pantalla3': (context) => const AnimatedContainerDemo(),
+        '/pantalla4': (context) => const AnimatedClock(),
+        '/pantalla5': (context) => const AnimatedPositionedDemo(),
       },
     );
   }

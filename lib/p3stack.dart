@@ -1,111 +1,70 @@
 import 'package:flutter/material.dart';
 
-class PantallaTres extends StatelessWidget {
-  const PantallaTres({Key? key}) : super(key: key);
+class AnimatedContainerDemo extends StatefulWidget {
+  const AnimatedContainerDemo({Key? key}) : super(key: key);
+
+  @override
+  _AnimatedContainerDemoState createState() => _AnimatedContainerDemoState();
+}
+
+class _AnimatedContainerDemoState extends State<AnimatedContainerDemo> {
+  // Variables animables
+  double _width = 100;
+  double _height = 100;
+  Color _color = Colors.blue;
+  BorderRadius _borderRadius = BorderRadius.circular(8);
+  bool _isSquare = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("S T A C K - Pantalla 3"),
+        title: const Text('AnimatedContainer Demo'),
       ),
       body: Center(
-        child: Stack(
-          // Alineación de los hijos del Stack
-          alignment: Alignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Contenedor más atrás (fondo)
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Container(
-                height: 300,
-                width: 300,
-                color: Colors.blue[200],
-                child: const Center(
-                  child: Text(
-                    'Capa 1 - Fondo',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blueGrey,
-                    ),
-                  ),
-                ),
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeInOut,
+              width: _width,
+              height: _height,
+              decoration: BoxDecoration(
+                color: _color,
+                borderRadius: _borderRadius,
               ),
             ),
-
-            // Contenedor intermedio
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Container(
-                height: 200,
-                width: 200,
-                color: Colors.blue[400],
-                child: const Center(
-                  child: Text(
-                    'Capa 2 - Medio',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
+            const SizedBox(height: 30),
+            ElevatedButton(
+              child: const Text('Cambiar Tamaño'),
+              onPressed: () {
+                setState(() {
+                  _width = _isSquare ? 200 : 100;
+                  _height = _isSquare ? 100 : 200;
+                  _isSquare = !_isSquare;
+                });
+              },
             ),
-
-            // Contenedor más adelante (frente)
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Container(
-                height: 100,
-                width: 100,
-                color: Colors.blue[600],
-                child: const Center(
-                  child: Text(
-                    'Capa 3',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
+            ElevatedButton(
+              child: const Text('Cambiar Color'),
+              onPressed: () {
+                setState(() {
+                  _color = _color == Colors.blue ? Colors.red : Colors.blue;
+                });
+              },
             ),
-
-            // Botón flotante sobre el stack
-            Positioned(
-              bottom: 20,
-              right: 20,
-              child: FloatingActionButton(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('¡Stack interactivo!'),
-                      duration: Duration(seconds: 1),
-                    ),
-                  );
-                },
-                child: const Icon(Icons.touch_app),
-              ),
+            ElevatedButton(
+              child: const Text('Redondear Esquinas'),
+              onPressed: () {
+                setState(() {
+                  _borderRadius = _borderRadius == BorderRadius.circular(8)
+                      ? BorderRadius.circular(50)
+                      : BorderRadius.circular(8);
+                });
+              },
             ),
           ],
-        ),
-      ),
-
-      // Barra inferior con información
-      bottomNavigationBar: Container(
-        height: 50,
-        color: Colors.blue[800],
-        child: const Center(
-          child: Text(
-            'Ejemplo de Stack con 3 capas',
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
         ),
       ),
     );
